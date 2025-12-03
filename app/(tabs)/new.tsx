@@ -1,16 +1,13 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function NewScreen() {
     const [nombre, setNombre] = useState("");
     const [fecha, setFecha] = useState("");
     const [monto, setMonto] = useState("");
     
-    const guardar = () => {
-    alert(`Guardado: ${nombre} vence el ${fecha}`);
-    };
-
-     const formatearFecha = (text: string) => {
+    const formatearFecha = (text: string) => {
     let cleaned = text.replace(/\D/g, "");
     cleaned = cleaned.slice(0, 8);
     // aplicar formato DD/MM/YYYY
@@ -22,6 +19,47 @@ export default function NewScreen() {
       formatted = formatted.slice(0, 5) + "/" + cleaned.slice(4);
     }
     setFecha(formatted);
+  };
+
+  const guardarServicio = async () => {
+    if (!nombre || fecha.length !== 10 || monto.length === 0) {
+      Alert.alert("Error", "Completá nombre, monto y fecha (DD/MM/AAAA)");
+      return;
+    }
+
+    // Convertir fecha DD/MM/AAAA a YYYY-MM-DD (útil para ordenar)
+    const [dia, mes, año] = fecha.split("/");
+    const fechaISO = `${año}-${mes}-${dia}`;
+
+    const nuevo = {
+      id: Date.now().toString(),
+      nombre,
+      monto,
+      fechaISO,
+      fechaDisplay: fecha
+    };
+
+    try {
+      // Leer lista existente
+      const data = await AsyncStorage.getItem("servicios");
+      const lista = data ? JSON.parse(data) : [];
+
+      // Agregar el nuevo servicio
+      lista.push(nuevo);
+
+      // Guardar
+      await AsyncStorage.setItem("servicios", JSON.stringify(lista));
+
+      Alert.alert("Guardado", "Servicio agregado correctamente");
+
+      // limpiar campos
+      setNombre("");
+      setFecha("");
+      setMonto("");
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "No se pudo guardar");
+    }
   };
 return(
     <View style={{
@@ -61,7 +99,7 @@ return(
         value={monto}
         onChangeText={setMonto}
       />
-      <Button title="Guardar" onPress={guardar} />
+      <Button title="Guardar" onPress={guardarServicio} />
     </View>
 
 );

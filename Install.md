@@ -1,4 +1,4 @@
-## Instalar
+### Instalar
 
   ```bash
 npx expo install expo-notifications expo-device expo-sqlite
@@ -8,3 +8,8 @@ npx expo install expo-notifications expo-device expo-sqlite
 🧩 expo-device: detecta si estás en dispositivo físico (no funciona igual en simuladores)
 
 🧩 expo-sqlite: guarda los datos localmente (una mini base SQLite en tu iPhone)
+
+## Instalar AsyncStorage
+  ```bash
+npx expo install @react-native-async-storage/async-storage
+  ```
