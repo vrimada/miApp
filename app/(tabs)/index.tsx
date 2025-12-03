@@ -1,30 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Device from 'expo-device';
-import * as Notifications from "expo-notifications";
-import { useEffect, useState } from "react";
+
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
-// Esto hace que las notificaciones se muestren incluso con la app abierta
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+
 
 type Servicio = {
     id: string;
     nombre: string;
     fechaISO: string;
     fechaDisplay: string;
+    monto: string;
   };
 
+ 
 export default function Index() {
   const [servicios, setServicios] = useState<Servicio[]>([]);
+  const getColorForDate = (fechaISO: string) => {
+    const hoy = new Date().toISOString().split("T")[0];
 
+    if (fechaISO < hoy) return "red";       // Vencido
+    if (fechaISO === hoy) return "orange";  // Hoy
+    return "green";                          // Futuro
+  };
    const cargarServicios = async () => {
     try {
       //Lee el almacenamiento
@@ -33,25 +32,49 @@ export default function Index() {
        const lista: Servicio[] = data ? JSON.parse(data) : [];
 
 
-      // Ordena por fecha ISO (YYYY-MM-DD)
-      lista.sort((a: any, b: any) =>
-        a.fechaISO.localeCompare(b.fechaISO)
-      );
+      //año actual
+      const anioActual = new Date().getFullYear();
+      //mes actual
+       const mesActual = new Date().getMonth() + 1; // Enero es 0
+      //dia actual
+      const diaActual = new Date().getDate();
+      
+ // Filtrar por año , mes y dia actual
+    const filtrados = lista.filter((s) => {
+      const [anio, mes, dia] = s.fechaISO.split("-"); // fechaISO: "YYYY-MM-DD"
+      return Number(anio) === anioActual && Number(mes) === mesActual && Number(dia) >= diaActual;
+    });
 
-      setServicios(lista);
+    setServicios(filtrados);
     } catch (err) {
       console.error(err);
     }
   };
-  
-  useEffect(() => {
+  /* async function guardarToken(token: string) {
+    try {
+      await AsyncStorage.setItem("pushToken", token);
+      console.log("Token guardado");
+    } catch (err) {
+      console.log("Error al guardar token:", err);
+    }
+  }
+  //corre una sola vez al montar
+ useEffect(() => {
+    registerForPushNotificationsAsync().then((token: unknown) => {
+      if (typeof token === 'string' && token) {
+        console.log("TOKEN:", token);
+        guardarToken(token);
+      }
+    });
+  }, []); */
+  //corre cada vez que volvés al tab
+  useFocusEffect(
+    useCallback(() => {
       cargarServicios();
-    // Pedir permisos apenas abre la app
-     if (Device.isDevice) 
-        Notifications.requestPermissionsAsync();
-  }, []);
+  }, []));
 
-  const enviarNotificacion = async () => {
+  
+/*   const enviarNotificacion = async () => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "¡Hola Vane! 🔔",
@@ -59,7 +82,9 @@ export default function Index() {
       },
       trigger: null, // null = se muestra inmediatamente
     });
-  };
+  }; */
+
+
 
   return (
     <View
@@ -90,12 +115,14 @@ export default function Index() {
                 marginBottom: 10,
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: "600" }}>
-                {item.nombre}
+              <Text style={{ fontSize: 18, fontWeight: "600", color: '#fff' }}>
+                {item.nombre} ${item.monto} - {" "}
+                  <Text style={{ fontSize: 16 ,  color: getColorForDate(item.fechaISO),    fontWeight: "600",}}>
+                  Vence: {item.fechaDisplay}
               </Text>
-              <Text style={{ fontSize: 16 }}>
-                Vence: {item.fechaDisplay}
               </Text>
+              
+            
             </View>
           )}
         />
@@ -106,3 +133,4 @@ export default function Index() {
     </View>
   );
 }
+
