@@ -1,12 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useRef, useState } from "react";
+import { Alert, Button, Text, TextInput, View } from 'react-native';
+
 
 export default function NewScreen() {
     const [nombre, setNombre] = useState("");
     const [fecha, setFecha] = useState("");
     const [monto, setMonto] = useState("");
-    
+    const montoRef = useRef<TextInput>(null);
+
     const formatearFecha = (text: string) => {
     let cleaned = text.replace(/\D/g, "");
     cleaned = cleaned.slice(0, 8);
@@ -21,13 +23,9 @@ export default function NewScreen() {
     setFecha(formatted);
   };
 
-  const guardarServicio = async () => {
-    if (!nombre || fecha.length !== 10 || monto.length === 0) {
-      Alert.alert("Error", "Completá nombre, monto y fecha (DD/MM/AAAA)");
-      return;
-    }
+  async function guardarServicioEnStorage() {
 
-    // Convertir fecha DD/MM/AAAA a YYYY-MM-DD (útil para ordenar)
+  // Convertir fecha DD/MM/AAAA a YYYY-MM-DD (útil para ordenar)
     const [dia, mes, año] = fecha.split("/");
     const fechaISO = `${año}-${mes}-${dia}`;
 
@@ -38,9 +36,7 @@ export default function NewScreen() {
       fechaISO,
       fechaDisplay: fecha
     };
-
-    try {
-      // Leer lista existente
+       // Leer lista existente
       const data = await AsyncStorage.getItem("servicios");
       const lista = data ? JSON.parse(data) : [];
 
@@ -49,13 +45,36 @@ export default function NewScreen() {
 
       // Guardar
       await AsyncStorage.setItem("servicios", JSON.stringify(lista));
+       
+}
+  const guardarServicio = async () => {
+    if (!nombre || fecha.length !== 10 || monto.length === 0) {
+      Alert.alert("Error", "Completá nombre, monto y fecha (DD/MM/AAAA)");
+      return;
+    }
 
-      Alert.alert("Guardado", "Servicio agregado correctamente");
+      // 1) Quitar el focus ANTES de limpiar
+    montoRef.current?.blur();
+     // 1) guardar en storage
+    await guardarServicioEnStorage();
+    
 
-      // limpiar campos
+    try {
+       // 2) programar notificación
+       /*  const target = new Date(fecha);
+        await programarNotificacion(
+            "Vencimiento hoy",
+            `${nombre} vence hoy`,
+            target
+        ); */
+      
+
+       // 3) limpiar campos del form
       setNombre("");
       setFecha("");
       setMonto("");
+
+      Alert.alert("Guardado", "Servicio agregado correctamente");
     } catch (err) {
       console.error(err);
       Alert.alert("Error", "No se pudo guardar");
@@ -94,6 +113,7 @@ return(
 
      <Text style={{color: '#fff' }}>Monto:</Text>
      <TextInput
+        ref={montoRef}
         style={{ borderWidth: 1, padding: 8, marginBottom: 20,   borderColor: '#fff' , color: '#fff' }}
         keyboardType="numeric"
         value={monto}
@@ -104,12 +124,3 @@ return(
 
 );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: 'center',
-    alignItems: 'center',   
-    },
-    text: {     color: '#fff',}});    

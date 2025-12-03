@@ -13,3 +13,8 @@ npx expo install expo-notifications expo-device expo-sqlite
   ```bash
 npx expo install @react-native-async-storage/async-storage
   ```
+
+## Fetch
+ ```bash
+npm install express node-fetch body-parser
+ ```
