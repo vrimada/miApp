@@ -87,39 +87,39 @@ return(
        
         padding: 20,
       }}>
-      <Text style={{ fontSize: 22, marginBottom: 20 , color: '#fff' }}>
+      <Text style={{ fontSize: 22, marginBottom: 20 , color: '#232323' }}>
         Alta de nuevo servicio
       </Text>
 
        
 
-      <Text style={{color: '#fff' }}>Nombre del servicio:</Text>
+      <Text style={{color: '#232323' }}>Nombre del servicio:</Text>
       <TextInput
-        style={{ borderWidth: 1, padding: 8, marginBottom: 10, color: '#fff' , 
-            borderColor: '#fff' , 
+        style={{ borderWidth: 1, padding: 8, marginBottom: 10, color: '#232323' , 
+            borderColor: '#232323' , 
         }}
         value={nombre}
         onChangeText={setNombre}
       />
 
-      <Text style={{color: '#fff' }}>Fecha de vencimiento:</Text>
+      <Text style={{color: '#232323' }}>Fecha de vencimiento:</Text>
       <TextInput
-        style={{ borderWidth: 1, padding: 8, marginBottom: 10,   borderColor: '#fff' , color: '#fff' }}
+        style={{ borderWidth: 1, padding: 8, marginBottom: 10,   borderColor: '#232323' , color: '#232323' }}
         value={fecha}
         keyboardType="numeric"
         onChangeText={formatearFecha}
         maxLength={10} // DD/MM/AAAA
       />
 
-     <Text style={{color: '#fff' }}>Monto:</Text>
+     <Text style={{color: '#232323' }}>Monto:</Text>
      <TextInput
         ref={montoRef}
-        style={{ borderWidth: 1, padding: 8, marginBottom: 20,   borderColor: '#fff' , color: '#fff' }}
+        style={{ borderWidth: 1, padding: 8, marginBottom: 20,   borderColor: '#232323' , color: '#232323' }}
         keyboardType="numeric"
         value={monto}
         onChangeText={setMonto}
       />
-      <Button title="Guardar" onPress={guardarServicio} />
+      <Button  title="Guardar"  onPress={guardarServicio} />
     </View>
 
 );

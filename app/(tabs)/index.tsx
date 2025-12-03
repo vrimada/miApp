@@ -17,13 +17,7 @@ type Servicio = {
  
 export default function Index() {
   const [servicios, setServicios] = useState<Servicio[]>([]);
-  const getColorForDate = (fechaISO: string) => {
-    const hoy = new Date().toISOString().split("T")[0];
-
-    if (fechaISO < hoy) return "red";       // Vencido
-    if (fechaISO === hoy) return "orange";  // Hoy
-    return "green";                          // Futuro
-  };
+ 
    const cargarServicios = async () => {
     try {
       //Lee el almacenamiento
@@ -45,28 +39,17 @@ export default function Index() {
       return Number(anio) === anioActual && Number(mes) === mesActual && Number(dia) >= diaActual;
     });
 
+     // Ordena por fecha ISO (YYYY-MM-DD)
+      filtrados.sort((a: any, b: any) =>
+        a.fechaISO.localeCompare(b.fechaISO)
+      );
+
     setServicios(filtrados);
     } catch (err) {
       console.error(err);
     }
   };
-  /* async function guardarToken(token: string) {
-    try {
-      await AsyncStorage.setItem("pushToken", token);
-      console.log("Token guardado");
-    } catch (err) {
-      console.log("Error al guardar token:", err);
-    }
-  }
-  //corre una sola vez al montar
- useEffect(() => {
-    registerForPushNotificationsAsync().then((token: unknown) => {
-      if (typeof token === 'string' && token) {
-        console.log("TOKEN:", token);
-        guardarToken(token);
-      }
-    });
-  }, []); */
+ 
   //corre cada vez que volvés al tab
   useFocusEffect(
     useCallback(() => {
@@ -96,12 +79,12 @@ export default function Index() {
       }}
     >
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 20, color: '#fff' }}>Vencimientos pendientes</Text>
+      <Text style={{ fontSize: 20, color: '#232323' }}>Vencimientos pendientes</Text>
      
     </View>
 
      {servicios.length === 0 ? (
-        <Text style={{ fontSize: 16 , color: '#fff' }}>No hay vencimientos cargados.</Text>
+        <Text style={{ fontSize: 16 , color: '#232323' }}>No hay vencimientos cargados.</Text>
       ) : (
         <FlatList
           data={servicios}
@@ -115,9 +98,9 @@ export default function Index() {
                 marginBottom: 10,
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: "600", color: '#fff' }}>
+              <Text style={{ fontSize: 18, fontWeight: "600", color: '#232323' }}>
                 {item.nombre} ${item.monto} - {" "}
-                  <Text style={{ fontSize: 16 ,  color: getColorForDate(item.fechaISO),    fontWeight: "600",}}>
+                  <Text style={{ fontSize: 16 ,      fontWeight: "600",}}>
                   Vence: {item.fechaDisplay}
               </Text>
               </Text>

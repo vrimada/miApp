@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 export default function ProfileScreen() {
     /**
@@ -37,52 +37,43 @@ type Servicio = {
       const data = await AsyncStorage.getItem("servicios");
       //Lo convierte en un array
        const lista: Servicio[] = data ? JSON.parse(data) : [];
-      // Ordena por fecha ISO (YYYY-MM-DD)
-      const anioActual = new Date().getFullYear();
-      //mes actual
-       const mesActual = new Date().getMonth() + 1; // Enero es 0
-     
-      
- // Filtrar por año y mes actual
-    const filtrados = lista.filter((s) => {
-      const [anio, mes, dia] = s.fechaISO.split("-"); // fechaISO: "YYYY-MM-DD"
-      return Number(anio) === anioActual && Number(mes) === mesActual 
-    });
+  
 // Ordena por fecha ISO (YYYY-MM-DD)
-      filtrados.sort((a: any, b: any) =>
+      lista.sort((a: any, b: any) =>
         a.fechaISO.localeCompare(b.fechaISO)
       );
-      setServicios(filtrados);
+      setServicios(lista);
   }
 
 return(
     <View  
     style={{
-        flex: 1,
-        justifyContent: "center",
+       flex: 1,
+         
         alignItems: "center",
         padding: 20,
       }}>
               <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 
-     <Text style={{ fontSize: 22 , color:'#232323',  alignItems: "center", justifyContent: "center"}}>Gastos del mes</Text>
+     <Text style={{ fontSize: 22 }}>Historial de Gastos</Text>
      </View>
       {servicios.length === 0 ? (
-              <Text style={{ fontSize: 16 , color: '#232323' }}>No hay vencimientos cargados.</Text>
+              <Text style={{ fontSize: 16  }}>No hay vencimientos cargados.</Text>
             ) : (
               <FlatList
                 data={servicios}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <View
-                     style={{
-                padding: 12,
-                borderWidth: 1,
-                borderRadius: 8,
-                marginBottom: 10,
-              }}
+                    style={{
+                      padding: 12,
+                      borderWidth: 1,
+                      borderRadius: 8,
+                      marginBottom: 10,
+                    }}
                   >
-                    <Text style={{ fontSize: 18, fontWeight: "600", color: '#232323' }}>
+                    
+                    <Text style={{ fontSize: 18, fontWeight: "600"}}>
                       {item.nombre} ${item.monto} - {" "}
                         <Text style={{ fontSize: 16 ,  color: getColorForDate(item.fechaISO),    fontWeight: "600",}}>
                         Vence: {item.fechaDisplay}
@@ -94,7 +85,21 @@ return(
                 )}
               />
             )}
+            
+            {/* <Button title="Enviar notificación" onPress={enviarNotificacion} />
+            <Link href="/(tabs)/profile" style={{color: '#fff'}}> Ir a Gastos</Link> */}
           </View>
+      
+    
+
 );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#25292e',
+    justifyContent: 'center',
+    alignItems: 'center',   
+    },
+    text: {     color: '#fff',}});    
