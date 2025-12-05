@@ -2,15 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Button, Switch, Text, TextInput, View } from "react-native";
+import { Servicio } from "./servicio";
 
-type Servicio = {
-  id: string;
-  nombre: string;
-  fechaISO: string;
-  fechaDisplay: string;
-  monto: string;
-  pagado?: boolean;
-};
+
 
 export default function EditarServicio() {
   const { id } = useLocalSearchParams(); // toma ?id=...
