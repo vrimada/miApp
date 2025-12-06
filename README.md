@@ -7,7 +7,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 1. Install dependencies (Cada proyecto Expo trae un package.json con librerías.)
 
    ```bash
-   npm install
+   npm instal
+   l
    ```
 👉 Solo se hace una vez al principio (o cuando agregás librerías nuevas).
 
