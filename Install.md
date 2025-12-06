@@ -2,6 +2,10 @@
 
   ```bash
 npx expo install expo-notifications expo-device expo-sqlite
+npx expo install @react-native-async-storage/async-storage
+npm install express node-fetch body-parser
+npm install -g expo-cli
+
 ```
 🧩 expo-notifications: maneja permisos y muestra notificaciones
 
@@ -9,12 +13,3 @@ npx expo install expo-notifications expo-device expo-sqlite
 
 🧩 expo-sqlite: guarda los datos localmente (una mini base SQLite en tu iPhone)
 
-## Instalar AsyncStorage
-  ```bash
-npx expo install @react-native-async-storage/async-storage
-  ```
-
-## Fetch
- ```bash
-npm install express node-fetch body-parser
- ```
