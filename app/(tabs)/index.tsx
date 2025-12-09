@@ -4,7 +4,6 @@ import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { Button, FlatList, Text, View } from "react-native";
 import { getColorForDate, Servicio } from '../servicio';
-import { programarNotificacionSeguro } from '../utils/Notificacion';
 
 
 export default function Index() {
@@ -117,7 +116,7 @@ export default function Index() {
         />
       )}
 
-       <View style={{ padding: 20 }}>
+      {/* <View style={{ padding: 20 }}>
       <Button
         title="Test inmediata (1 segundo)"
         onPress={() => {
@@ -130,7 +129,11 @@ export default function Index() {
       <Button
         title="Test programada (dentro de 10 segundos)"
         onPress={() => {
-          const fecha = new Date(Date.now() + 10 * 1000);
+          const fecha = new Date(Date.now() );
+          const fechaAhora = fecha;
+           fecha.setSeconds(fecha.getSeconds() + 10);
+            
+          Alert.alert("Notificación programada", `Es la hora ${fechaAhora.toLocaleTimeString()}. Debería salir en: ${fecha.toLocaleTimeString()}`);
           programarNotificacionSeguro(
             "Programada",
             "Esta debería salir en 10 segundos",
@@ -138,7 +141,7 @@ export default function Index() {
           );
         }}
       />
-    </View>
+    </View>*/}
 
       {/* <Button title="Enviar notificación" onPress={enviarNotificacion} />
       <Link href="/(tabs)/profile" style={{color: '#fff'}}> Ir a Gastos</Link> */}

@@ -1,21 +1,11 @@
-### PARA ACTUALIZAR LA WEB (versión rápida)
+## Expo Publish
+## Instalacion de EAS y logueo de usuario
  ```bash
-npx expo export
-
-git switch gh-pages
-
-git rm -rf .
+npm install -g eas-cli
+eas login
  ```
-copiar dist/*
 
-commit & push
-
-Es decir:
-
-git switch gh-pages
-git rm -rf .
-cp -r dist/* .
-git add .
-git commit -m "update"
-git push origin gh-pages --force
-git switch main
+ ## Deploy
+ ```bash
+eas update --branch production --message "primer deploy"
+ ```

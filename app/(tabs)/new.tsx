@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRef, useState } from "react";
 import { Alert, Button, Text, TextInput, View } from 'react-native';
+import { programarNotificacionSeguro } from "../utils/Notificacion";
 
 
 export default function NewScreen() {
@@ -61,12 +62,17 @@ export default function NewScreen() {
 
     try {
        // 2) programar notificación
-       /*  const target = new Date(fecha);
-        await programarNotificacion(
-            "Vencimiento hoy",
-            `${nombre} vence hoy`,
+         const target = new Date(fecha);
+           programarNotificacionSeguro(
+            "Vencimiento hoy!",
+            `${nombre} vence hoy por un monto de $${monto}`,
             target
-        ); */
+          );
+        // await programarNotificacion(
+        //     "Vencimiento hoy",
+        //     `${nombre} vence hoy`,
+        //     target
+        // ); 
       
 
        // 3) limpiar campos del form
