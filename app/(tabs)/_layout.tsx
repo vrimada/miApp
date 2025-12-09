@@ -1,11 +1,32 @@
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import * as Notifications from "expo-notifications";
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
+
+// handler global
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  
+  useEffect(() => {
+    (async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== "granted") {
+        await Notifications.requestPermissionsAsync();
+      }
+    })();
+  }, []);
 
   return (
     <Tabs
