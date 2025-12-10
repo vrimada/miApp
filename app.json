@@ -1,5 +1,6 @@
 {
   "expo": {
+     "owner": "vrimada",
     "name": "miApp",
     "slug": "miApp",
     "version": "1.0.0",

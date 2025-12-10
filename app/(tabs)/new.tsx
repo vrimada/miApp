@@ -69,7 +69,7 @@ export default function NewScreen() {
             target
           );
         // await programarNotificacion(
-        //     "Vencimiento hoy",
+        //     "Vencimiento hoy",v
         //     `${nombre} vence hoy`,
         //     target
         // ); 
