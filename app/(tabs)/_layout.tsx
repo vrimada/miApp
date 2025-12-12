@@ -29,24 +29,27 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#232323',
-        headerShown: true,
+        tabBarActiveTintColor: '#FFFFFF',
+        headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+        backgroundColor: '#232323',   // ← cambiá este color
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           headerTitle: "Inicio",
           title: 'Inicio',
-          headerTintColor: '#455454',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={'#232323'} />,
+          headerTintColor: '#FFFFFF',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={'#FFFFFF'} />,
         }}
       />
       <Tabs.Screen
         name="new"
         options={{
           title: 'Nuevo',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus" color={'#232323'} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus" color={'#FFFFFF'} />,
         }}
       />
       <Tabs.Screen
@@ -54,7 +57,7 @@ export default function TabLayout() {
         name="lista"
         options={{
           title: 'Gastos',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={'#232323'} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={'#FFFFFF'} />,
           headerTitle: "Gastos del mes",
         }}
         
@@ -63,9 +66,10 @@ export default function TabLayout() {
         name="history"
         options={{
           title: 'Historial',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={'#232323'} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={'#FFFFFF'} />,
          
         }}
+        
       />
     </Tabs>
   ); 

@@ -1,10 +1,10 @@
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, } from "expo-router";
 import { useCallback, useState } from "react";
-import { Button, FlatList, Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import styles from "../../styles.js";
 import { getColorForDate, Servicio } from '../servicio';
-
 
 export default function Index() {
   const [servicios, setServicios] = useState<Servicio[]>([]);
@@ -61,90 +61,60 @@ export default function Index() {
 
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-      }}
-    >
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ fontSize: 20, color: '#232323' }}>Vencimientos pendientes</Text>
+    <View style={styles.container} >
 
-      </View>
+      <View style={styles.card}>
 
-      {servicios.length === 0 ? (
-        <Text style={{ fontSize: 16, color: '#232323' }}>No hay vencimientos cargados.</Text>
-      ) : (
-        <FlatList
-          data={servicios}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                padding: 12,
+          <Text style={styles.title}>Vencimientos pendientes</Text>
+       
+        {servicios.length === 0 ? (
+          <Text style={{ fontSize: 16, color: '#232323' }}>No hay vencimientos cargados.</Text>
+        ) : (
+          <FlatList
+            data={servicios}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View
+                style={{ padding: 12,
                 borderWidth: 1,
                 borderRadius: 8,
-                marginBottom: 10,
-              }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: "600", color: '#232323' }}>
-                {item.nombre} ${item.monto} - {" "}
-                <Text style={{ fontSize: 16, fontWeight: "600", color: getColorForDate(item.fechaISO), }}>
-                  Vence: {item.fechaDisplay} {" "}
+                marginBottom: 10,}}
+              >
+                <Text style={{ fontSize: 18, fontWeight: "600" }}>
+                  {item.nombre} ${item.monto} 
                 </Text>
-                Pagado:{item.pagado === true ? ' Sí' : ' No'}
-
-              </Text>
-              <Button
-                title="Editar"
-                onPress={() => {
-                  router.push({
-                    pathname: "/editar",
-                    params: { id: item.id },
-                  });
-                }}
-               
-              />
-
-
-            </View>
-
-            
-          )}
-        />
-      )}
-
-      {/* <View style={{ padding: 20 }}>
-      <Button
-        title="Test inmediata (1 segundo)"
-        onPress={() => {
-          programarNotificacionSeguro("Inmediata", "Sale en 1 segundo");
-        }}
-      />
-
-      <View style={{ height: 20 }} />
-
-      <Button
-        title="Test programada (dentro de 10 segundos)"
-        onPress={() => {
-          const fecha = new Date(Date.now() );
-          const fechaAhora = fecha;
-           fecha.setSeconds(fecha.getSeconds() + 10);
-            
-          Alert.alert("Notificación programada", `Es la hora ${fechaAhora.toLocaleTimeString()}. Debería salir en: ${fecha.toLocaleTimeString()}`);
-          programarNotificacionSeguro(
-            "Programada",
-            "Esta debería salir en 10 segundos",
-            fecha
-          );
-        }}
-      />
-    </View>*/}
-
-      {/* <Button title="Enviar notificación" onPress={enviarNotificacion} />
-      <Link href="/(tabs)/profile" style={{color: '#fff'}}> Ir a Gastos</Link> */}
+                 <Text style={{ fontSize: 16, fontWeight: "600", color: getColorForDate(item.fechaISO), }}>
+                    Vence: {item.fechaDisplay} 
+                  </Text>
+                  <Text>
+                  Pagado:{item.pagado === true ? 
+                    <Ionicons name="checkmark-circle" size={20} style={styles.icon} />
+                    :
+                    <Ionicons name="close-circle" size={20} style={styles.icon} />
+                        } 
+                  </Text>
+               {/*} <Button
+                  title="Editar"
+                  onPress={() => {
+                    router.push({
+                      pathname: "/editar",
+                      params: { id: item.id },
+                    });
+                  }}
+                />*/}
+                 <TouchableOpacity style={styles.button} onPress={() => {
+                    router.push({
+                      pathname: "/editar",
+                      params: { id: item.id },
+                    });
+                  }}>
+                    <Text style={styles.loginText}>Editar</Text>
+                  </TouchableOpacity>
+              </View>
+            )}
+          />
+        )}
+      </View>
     </View>
   );
 }

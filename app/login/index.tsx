@@ -1,12 +1,15 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import styles from "../../styles.js";
 import { supabase } from "../supabase/client";
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  /*const [remember, setRemember] = useState(false);*/
 
   const onLogin = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -21,75 +24,73 @@ export default function LoginScreen() {
     }
   };
 
+  function onRemember() {
+    Alert.alert("Recuperar contraseña", "Funcionalidad de recuperación de contraseña no implementada.");
+  }
   return (
-    <View style={{ padding: 20,flex: 1, }}>
-      <Text>Iniciar sesión</Text>
+   
 
-      <TextInput
-      placeholderTextColor={
+     <View style={styles.container}>
+      {/* Fondo (después podés reemplazar por ImageBackground si querés) */}
+      <View style={styles.card}>
+        <Text style={styles.title}>Login</Text>
 
-        '#888888' }
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={{ borderWidth: 1, marginBottom: 10, padding: 8, color: '#232323' }}
-      />
+        {/* Input Email */}
+        <View style={styles.inputContainer}>
+          <Ionicons name="person-outline" size={20} style={styles.icon} />
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholderTextColor={'#888888' }
+          />
+        </View>
 
-      <TextInput
-        placeholderTextColor={'#888888' }
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        style={{ borderWidth: 1, marginBottom: 10, padding: 8 , color: '#232323' , }}
-      />
+        {/* Input password */}
+        <View style={styles.inputContainer}>
+          <Ionicons name="lock-closed-outline" size={20} style={styles.icon} />
+          <TextInput
+            placeholder="Contraseña"
+            secureTextEntry
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholderTextColor={'#888888' }
+          />
+        </View>
 
+        {/* Row remember + forgot */}
+        <View style={styles.row}>
+          {/*<TouchableOpacity
+            style={styles.checkboxRow}
+            onPress={() => setRemember(!remember)}
+          >
+            <View style={styles.checkbox}>
+              {remember && <View style={styles.checkboxTick} />}
+            </View>
+            <Text style={styles.checkboxText}>Recorda usuario y contraseña</Text>
+          </TouchableOpacity>*/}
 
+          <TouchableOpacity onPress={onRemember}>
+            <Text style={styles.forgotText}>Me olvide la contraseña</Text>
+          </TouchableOpacity>
+        </View>
 
-   <View style={[ styles.button, { backgroundColor: '#fff', borderRadius: 5 , marginBottom: 10 , marginTop:150 }]}>
-            <Button title="Ingresar" onPress={onLogin} />
+        {/* Botón login */}
+        <TouchableOpacity style={styles.loginButton} onPress={onLogin}>
+          <Text style={styles.loginText}>Login</Text>
+         
+        </TouchableOpacity>
+
+        {/* Footer */}
+        <Text style={styles.footerText}>
+          No tenes una cuenta? <Text style={styles.register}>Registrar</Text>
+        </Text>
       </View>
-
-      <View style={[ styles.button,, { backgroundColor: '#fff' ,  marginBottom: 10, borderRadius: 5 }]}>
-        <Button
-          title="Crear cuenta"
-          onPress={() => router.push("/login/register" as any)}
-          
-        />
-      </View>
-
-  <View style={[ styles.button,, { backgroundColor: '#fff' }]}>
-      <Button
-        title="Olvidé mi contraseña"
-        onPress={() => router.push("/login/forgot" as any)}
-      /> </View>
-   </View>
-     
+    </View>
 
   );
 }
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    width: 320,
-    height: 68,
-    marginHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
-  },
-  button: {
-    borderRadius: 5,
-    borderColor:' #25292e',
-    borderBottomColor: '#232323',
-    // width: '100%',
-    // height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonLabel: {
-    color: '#fff',
-    fontSize: 16,
-  },
-});
+
