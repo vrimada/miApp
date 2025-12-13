@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRef, useState } from "react";
-import { Alert, Button, Text, TextInput, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import styles from "../../styles.js";
 import { programarNotificacionSeguro } from "../utils/Notificacion";
 
 
@@ -87,46 +88,49 @@ export default function NewScreen() {
     }
   };
 return(
-    <View style={{
-        flex: 1,
-        justifyContent: "center",
-       
-        padding: 20,
-      }}>
-      <Text style={{ fontSize: 22, marginBottom: 20 , color: '#232323' }}>
+  <View style={styles.container} >
+
+
+    <View style={styles.card}>
+      <Text style={styles.title}>
         Alta de nuevo servicio
       </Text>
+      <Text style={styles.text}>Nombre del servicio:</Text>
+      
+      <View style={styles.inputContainer} >
+        <TextInput
+          style={styles.input}
+          value={nombre}
+          onChangeText={setNombre}
+        />
+      </View>
 
-       
+      <Text style={styles.text}>Fecha de vencimiento:</Text>
+      <View style={styles.inputContainer} >
+        <TextInput
+          style={styles.input}
+          value={fecha}
+          keyboardType="numeric"
+          onChangeText={formatearFecha}
+          maxLength={10} // DD/MM/AAAA
+        />
+       </View>
 
-      <Text style={{color: '#232323' }}>Nombre del servicio:</Text>
-      <TextInput
-        style={{ borderWidth: 1, padding: 8, marginBottom: 10, color: '#232323' , 
-            borderColor: '#232323' , 
-        }}
-        value={nombre}
-        onChangeText={setNombre}
-      />
+     <Text style={styles.text}>Monto:</Text>
 
-      <Text style={{color: '#232323' }}>Fecha de vencimiento:</Text>
-      <TextInput
-        style={{ borderWidth: 1, padding: 8, marginBottom: 10,   borderColor: '#232323' , color: '#232323' }}
-        value={fecha}
-        keyboardType="numeric"
-        onChangeText={formatearFecha}
-        maxLength={10} // DD/MM/AAAA
-      />
-
-     <Text style={{color: '#232323' }}>Monto:</Text>
+     <View style={styles.inputContainer} >
      <TextInput
         ref={montoRef}
-        style={{ borderWidth: 1, padding: 8, marginBottom: 20,   borderColor: '#232323' , color: '#232323' }}
+        style={styles.input}
         keyboardType="numeric"
         value={monto}
         onChangeText={setMonto}
       />
-      <Button  title="Guardar"  onPress={guardarServicio} />
+      </View>
+      <TouchableOpacity style={styles.saveButton} onPress={guardarServicio}>
+        <Text style={styles.text}>Guardar</Text>
+      </TouchableOpacity>
     </View>
-
+  </View>
 );
 }

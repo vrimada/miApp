@@ -27,6 +27,10 @@ export default function Index() {
       // Filtrar por año , mes y dia actual
       const filtrados = lista.filter((s) => {
         const [anio, mes, dia] = s.fechaISO.split("-"); // fechaISO: "YYYY-MM-DD"
+        const pagado = s.pagado;
+        if (pagado) {
+          return false; // Excluir si ya está pagado
+        }
         return Number(anio) === anioActual && Number(mes) === mesActual && Number(dia) >= diaActual;
       });
 
@@ -41,6 +45,10 @@ export default function Index() {
     }
   };
 
+  function setPagado(value: boolean) {    
+    // Actualiza el estado local
+    //setPagado(value);    
+  }
   //corre cada vez que volvés al tab
   useFocusEffect(
     useCallback(() => {
@@ -65,10 +73,10 @@ export default function Index() {
 
       <View style={styles.card}>
 
-          <Text style={styles.title}>Vencimientos pendientes</Text>
+          <Text style={styles.title}>Servicios pendientes</Text>
        
         {servicios.length === 0 ? (
-          <Text style={{ fontSize: 16, color: '#232323' }}>No hay vencimientos cargados.</Text>
+          <Text style={styles.text}>No hay vencimientos cargados.</Text>
         ) : (
           <FlatList
             data={servicios}
@@ -102,13 +110,17 @@ export default function Index() {
                     });
                   }}
                 />*/}
-                 <TouchableOpacity style={styles.button} onPress={() => {
+                
+
+
+
+                 <TouchableOpacity style={styles.EditButton} onPress={() => {
                     router.push({
                       pathname: "/editar",
                       params: { id: item.id },
                     });
                   }}>
-                    <Text style={styles.loginText}>Editar</Text>
+                    <Text style={styles.text}>Editar</Text>
                   </TouchableOpacity>
               </View>
             )}

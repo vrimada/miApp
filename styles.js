@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "rgba(0,0,0,0.3)", // simulación de fondo oscuro
+    backgroundColor: "rgba(0,0,0,0.3)",
   },
   card: {
     backgroundColor: "rgba(255,255,255,0.15)",
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textDecorationLine: "underline",
   },
-  loginButton: {
-    backgroundColor: '#787878',
+  OkButton: {
+    backgroundColor: "#787878",
     paddingVertical: 12,
     borderRadius: 25,
     marginBottom: 20,
   },
-  loginText: {
+  text: {
     textAlign: "center",
     fontSize: 18,
     fontWeight: "600",
@@ -82,8 +82,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
-  button: {
-    backgroundColor: '#F29B8A',
+  EditButton: {
+    backgroundColor: "#F29B8A",
+    paddingVertical: 12,
+    borderRadius: 25,
+  
+
+  },
+  saveButton: {
+    backgroundColor: "#C0E080",
     paddingVertical: 12,
     borderRadius: 25,
   },

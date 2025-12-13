@@ -1,6 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import styles from "../../styles.js";
 import { supabase } from "../supabase/client";
 
 export default function RegisterScreen() {
@@ -24,55 +26,48 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View style={{ padding: 20,flex: 1, }}>
-      <Text>Crear nueva cuenta</Text>
+    <View style={styles.container}>
+      <View style={styles.card} >
+        <Text style={styles.title}>Crear cuenta</Text>
 
-      <TextInput
-        placeholder="Email"
-        placeholderTextColor={'#888888' }
-        value={email}
-        onChangeText={setEmail}
-        style={{ borderWidth: 1, marginBottom: 10, padding: 8 }}
-      />
+        <View style={styles.inputContainer}>
+          <Ionicons name="person-outline" size={20} style={styles.icon} />
 
-      <TextInput
-        placeholder="Contraseña"
-        placeholderTextColor={'#888888' }
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        style={{ borderWidth: 1, marginBottom: 10, padding: 8 }}
-      />
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor={'#888888'}
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+        </View>
 
-      <View style={[styles.buttonContainer, { backgroundColor: '#fff'} ]} >
-      <Button title="Registrarme" onPress={onRegister} />
+        <View style={styles.inputContainer}>
+          <Ionicons name="lock-closed-outline" size={20} style={styles.icon} />
+
+          <TextInput
+            placeholder="Contraseña"
+            placeholderTextColor={'#888888'}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+
+          />
+        </View>
+        <TouchableOpacity style={styles.OkButton} onPress={onRegister}>
+          <Text style={styles.text}>Crear</Text>
+        </TouchableOpacity>
+
+        <View style={styles.row} >
+          <TouchableOpacity onPress={() => router.replace("/login")}>
+            <Text style={styles.register}>Volver</Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
     </View>
   );
 }
 
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    width: 320,
-    height: 68,
-    marginHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
-  },
-  button: {
-    borderRadius: 5,
-    borderColor:' #25292e',
-    borderBottomColor: '#232323',
-    // width: '100%',
-    // height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonLabel: {
-    color: '#fff',
-    fontSize: 16,
-  },
-})
